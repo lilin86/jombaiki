@@ -1,0 +1,8 @@
+{
+  "name": "JomBaiki - Malaysia's Auto Hub",
+  "description": "A one-stop platform for Malaysian car owners to find spare parts, access maintenance guides, participate in part bidding, and join a community of car enthusiasts.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
