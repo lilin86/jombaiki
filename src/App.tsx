@@ -18,16 +18,16 @@ import {
   Newspaper,
   LayoutDashboard
 } from 'lucide-react';
-import Home from './components/Home.tsx';
-import SpareParts from './components/SpareParts.tsx';
-import Community from './components/Community.tsx';
-import Bidding from './components/Bidding.tsx';
-import CarBidding from './components/CarBidding.tsx';
-import MaintenanceGuide from './components/MaintenanceGuide.tsx';
-import AIChat from './components/AIChat.tsx';
-import Lubricants from './components/Lubricants.tsx';
-import AutoNews from './components/AutoNews.tsx';
-import MyGarage from './components/MyGarage.tsx';
+import Home from './components/Home';
+import SpareParts from './components/SpareParts';
+import Community from './components/Community';
+import Bidding from './components/Bidding';
+import CarBidding from './components/CarBidding';
+import MaintenanceGuide from './components/MaintenanceGuide';
+import AIChat from './components/AIChat';
+import Lubricants from './components/Lubricants';
+import AutoNews from './components/AutoNews';
+import MyGarage from './components/MyGarage';
 
 export type Tab = 'home' | 'garage' | 'parts' | 'lubricants' | 'car-bidding' | 'bidding' | 'community' | 'maintenance' | 'ai' | 'news';
 

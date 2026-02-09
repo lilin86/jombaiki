@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader2, Sparkles, Camera } from 'lucide-react';
-import { getMaintenanceAdvice } from '../services/gemini.ts';
+import { getMaintenanceAdvice } from '../services/gemini';
 
 interface Message {
   id: string;

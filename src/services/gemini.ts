@@ -1,17 +1,7 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Initialize GoogleGenAI strictly using process.env.API_KEY
-// We use a safe accessor to prevent module-level ReferenceError in environments without defined 'process'
-const getApiKey = () => {
-  try {
-    return process.env.API_KEY || '';
-  } catch (e) {
-    return '';
-  }
-};
-
-const ai = new GoogleGenAI({ apiKey: getApiKey() });
+// Initialize GoogleGenAI strictly using process.env.API_KEY as per guidelines
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getMaintenanceAdvice = async (carModel: string, issue: string) => {
   try {
@@ -55,6 +45,7 @@ export const getPartChecklist = async (carModel: string, mileage: number) => {
         }
       }
     });
+    // response.text is a property; ensure we handle potential undefined values
     return JSON.parse(response.text || '{"items": []}');
   } catch (error) {
     console.error("Checklist Error:", error);
