@@ -72,7 +72,7 @@ const App: React.FC = () => {
       case 'news': return <AutoNews />;
       case 'parts': return <SpareParts userVehicles={vehicles} parts={parts} />;
       case 'lubricants': return <Lubricants />;
-      case 'car-bidding': return <CarBidding onNavigate={setActiveTab} />;
+      case 'car-bidding': return <CarBidding />;
       case 'community': return <Community />;
       case 'bidding': return <Bidding auctions={auctions} onBid={(id, amt) => setAuctions(auctions.map(a => a.id === id ? {...a, currentBid: amt, bids: a.bids + 1} : a))} />;
       case 'maintenance': return <MaintenanceGuide activeVehicle={vehicles[0]} />;
