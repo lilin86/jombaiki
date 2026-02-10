@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Timer, 
@@ -11,8 +12,14 @@ import {
   Info,
   Calendar,
   Gauge,
-  Car as CarIcon
+  Car as CarIcon,
+  Check,
+  Loader2
 } from 'lucide-react';
+
+interface CarBiddingProps {
+  onNavigate?: (tab: any) => void;
+}
 
 const MOCK_CAR_AUCTIONS = [
   {
@@ -69,10 +76,20 @@ const MOCK_CAR_AUCTIONS = [
   }
 ];
 
-const CarBidding: React.FC = () => {
+const CarBidding: React.FC<CarBiddingProps> = ({ onNavigate }) => {
   const [activeFilter, setActiveFilter] = useState('All');
+  const [biddingId, setBiddingId] = useState<string | null>(null);
 
   const filters = ['All', 'Perodua', 'Proton', 'Honda', 'Toyota', 'Other'];
+
+  const handleBid = (id: string) => {
+    setBiddingId(id);
+    // Simulate bid logic
+    setTimeout(() => {
+      setBiddingId(null);
+      alert("Bid placed successfully! You are currently the highest bidder.");
+    }, 1000);
+  };
 
   return (
     <div className="space-y-8 pb-10">
@@ -89,11 +106,15 @@ const CarBidding: React.FC = () => {
           </p>
           <div className="flex gap-4">
             <button className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-2xl font-bold transition-all shadow-lg active:scale-95">Browse Listings</button>
-            <button className="bg-white/10 hover:bg-white/20 px-8 py-3 rounded-2xl font-bold backdrop-blur-sm transition-all border border-white/20 active:scale-95">Sell My Car</button>
+            <button 
+              onClick={() => onNavigate?.('management')}
+              className="bg-white/10 hover:bg-white/20 px-8 py-3 rounded-2xl font-bold backdrop-blur-sm transition-all border border-white/20 active:scale-95"
+            >
+              Sell My Car
+            </button>
           </div>
         </div>
         
-        {/* Animated Background Elements */}
         <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
           <CarIcon className="w-full h-full p-20 -rotate-12 translate-x-1/4" />
         </div>
@@ -187,8 +208,13 @@ const CarBidding: React.FC = () => {
                   <button className="p-3 bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all">
                     <Info className="w-5 h-5" />
                   </button>
-                  <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-3 rounded-xl font-black text-sm hover:bg-blue-600 transition-all active:scale-95 shadow-lg shadow-slate-200">
-                    <Hammer className="w-4 h-4" />
+                  <button 
+                    onClick={() => handleBid(car.id)}
+                    disabled={biddingId === car.id}
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-3 rounded-xl font-black text-sm hover:bg-blue-600 transition-all active:scale-95 shadow-lg shadow-slate-200 disabled:opacity-50"
+                  >
+                    {/* Fixed missing Loader2 import */}
+                    {biddingId === car.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Hammer className="w-4 h-4" />}
                     Bid Now
                   </button>
                 </div>
@@ -198,7 +224,6 @@ const CarBidding: React.FC = () => {
         ))}
       </div>
 
-      {/* Guide Card */}
       <div className="bg-white rounded-[2rem] p-8 border border-dashed border-slate-300 flex flex-col md:flex-row items-center gap-8">
         <div className="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 shrink-0">
           <History className="w-10 h-10" />
