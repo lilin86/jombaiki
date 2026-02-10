@@ -233,7 +233,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <span className="font-bold text-xl text-slate-900">JomBaiki</span>
         </div>
         <p className="text-slate-500 text-sm max-w-sm">
-          Built for Malaysians, by car enthusiasts. Your trusted partner for automotive care.
+          Built for Malaysians, by car enthusiasts. Your trusted partner for automotive care. Mahalil Aisha Jamaluddin
         </p>
         <div className="flex gap-6 mt-4">
            {['Terms', 'Privacy', 'Help Center', 'Workshop Login'].map(link => (
