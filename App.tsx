@@ -12,7 +12,7 @@ import {
   X, 
   PlusCircle,
   Bell,
-  Droplets,
+  Droplet,
   Home as HomeIcon,
   Tag,
   Newspaper,
@@ -28,18 +28,7 @@ import AIChat from './components/AIChat.tsx';
 import Lubricants from './components/Lubricants.tsx';
 import AutoNews from './components/AutoNews.tsx';
 import MyGarage from './components/MyGarage.tsx';
-
-export type Tab = 'home' | 'garage' | 'parts' | 'lubricants' | 'car-bidding' | 'bidding' | 'community' | 'maintenance' | 'ai' | 'news';
-
-export interface Vehicle {
-  id: string;
-  brand: string;
-  model: string;
-  year: string;
-  mileage: number;
-  plate: string;
-  lastService: string;
-}
+import { Tab, Vehicle } from './types.ts';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('home');
@@ -57,7 +46,7 @@ const App: React.FC = () => {
     { id: 'garage', name: 'My Garage', icon: LayoutDashboard },
     { id: 'news', name: 'Auto News', icon: Newspaper },
     { id: 'parts', name: 'Spare Parts', icon: ShoppingBag },
-    { id: 'lubricants', name: 'Lubricants', icon: Droplets },
+    { id: 'lubricants', name: 'Lubricants', icon: Droplet },
     { id: 'car-bidding', name: 'Car Auctions', icon: Tag },
     { id: 'bidding', name: 'Part Bidding', icon: Gavel },
     { id: 'community', name: 'Community Hub', icon: Users },

@@ -1,19 +1,21 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Initialize GoogleGenAI strictly using process.env.API_KEY
-// We use a safe accessor to prevent module-level ReferenceError in environments without defined 'process'
+// Safe API key retrieval
 const getApiKey = () => {
   try {
-    return process.env.API_KEY || '';
+    return (typeof process !== 'undefined' && process.env.API_KEY) || '';
   } catch (e) {
     return '';
   }
 };
 
-const ai = new GoogleGenAI({ apiKey: getApiKey() });
+const apiKey = getApiKey();
+// We only initialize the client if we have a key to avoid construction errors
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
 export const getMaintenanceAdvice = async (carModel: string, issue: string) => {
+  if (!ai) return "AI Mechanic is currently offline. Please check your connection.";
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
@@ -30,6 +32,7 @@ export const getMaintenanceAdvice = async (carModel: string, issue: string) => {
 };
 
 export const getPartChecklist = async (carModel: string, mileage: number) => {
+  if (!ai) return { items: [] };
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
@@ -59,5 +62,22 @@ export const getPartChecklist = async (carModel: string, mileage: number) => {
   } catch (error) {
     console.error("Checklist Error:", error);
     return { items: [] };
+  }
+};
+
+export const getNewsSummary = async (newsTitles: string[]) => {
+  if (!ai) return "Unable to generate summary at this time.";
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: `You are a Malaysian automotive expert. Summarize the following news headlines into a 4-bullet point trend report for today. Headlines: ${newsTitles.join(' | ')}. Keep it concise and professional.`,
+      config: {
+        thinkingConfig: { thinkingBudget: 0 }
+      }
+    });
+    return response.text;
+  } catch (error) {
+    console.error("Summary Error:", error);
+    return "Failed to generate summary. Please try again.";
   }
 };

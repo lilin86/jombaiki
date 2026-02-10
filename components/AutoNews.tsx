@@ -9,8 +9,11 @@ import {
   ChevronRight, 
   Flame,
   Sparkles,
-  Info
+  Info,
+  Loader2,
+  X
 } from 'lucide-react';
+import { getNewsSummary } from '../services/gemini.ts';
 
 const NEWS_ARTICLES = [
   {
@@ -57,11 +60,23 @@ const NEWS_ARTICLES = [
 
 const AutoNews: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('All');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [showFullHeroReport, setShowFullHeroReport] = useState(false);
+
   const categories = ['All', 'New Launch', 'Fuel Update', 'Regulations', 'EV News', 'Industry'];
 
   const filteredNews = activeCategory === 'All' 
     ? NEWS_ARTICLES 
     : NEWS_ARTICLES.filter(n => n.category === activeCategory);
+
+  const handleGenerateSummary = async () => {
+    setIsGenerating(true);
+    const titles = NEWS_ARTICLES.map(a => a.title);
+    const result = await getNewsSummary(titles);
+    setSummary(result || "Could not generate summary.");
+    setIsGenerating(false);
+  };
 
   return (
     <div className="space-y-10 pb-20 max-w-7xl mx-auto">
@@ -85,7 +100,10 @@ const AutoNews: React.FC = () => {
             Proton e.MAS 7: Malaysia's First National Electric Vehicle Revealed.
           </h2>
           <div className="flex flex-col md:flex-row md:items-center gap-6">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold transition-all flex items-center gap-2 self-start active:scale-95 shadow-xl shadow-blue-500/20">
+            <button 
+              onClick={() => setShowFullHeroReport(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold transition-all flex items-center gap-2 self-start active:scale-95 shadow-xl shadow-blue-500/20"
+            >
               Read Full Report
               <ArrowRight className="w-5 h-5" />
             </button>
@@ -96,6 +114,26 @@ const AutoNews: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Hero Modal Placeholder */}
+      {showFullHeroReport && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-md" onClick={() => setShowFullHeroReport(false)}></div>
+          <div className="bg-white rounded-[2.5rem] w-full max-w-2xl relative z-10 shadow-2xl overflow-y-auto max-h-[90vh] p-8 md:p-12">
+            <button onClick={() => setShowFullHeroReport(false)} className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-full">
+              <X className="w-6 h-6 text-slate-400" />
+            </button>
+            <span className="text-blue-600 font-black uppercase text-[10px] tracking-widest mb-2 block">Special Feature</span>
+            <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-6">Proton e.MAS 7: Everything we know so far.</h3>
+            <div className="prose prose-slate max-w-none text-slate-600 space-y-4">
+              <p>The Proton e.MAS 7 marks a significant milestone in Malaysia's automotive history. Developed on the Geely-derived GMA platform, this C-segment SUV is built from the ground up to be an electric vehicle.</p>
+              <p>With an estimated range of 450km (WLTP) and support for 150kW DC fast charging, Proton aims to compete directly with current market leaders like BYD and Tesla, while maintaining its competitive price advantage for the local market.</p>
+              <p>Pre-orders are expected to open in Q3 2024, with deliveries starting shortly after. Stay tuned to JomBaiki for exclusive test drive reviews coming soon!</p>
+            </div>
+            <button onClick={() => setShowFullHeroReport(false)} className="mt-8 w-full py-4 bg-slate-900 text-white rounded-2xl font-bold">Close Report</button>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* Main Feed */}
@@ -213,12 +251,38 @@ const AutoNews: React.FC = () => {
                 <Sparkles className="w-5 h-5" />
                 <span className="text-[10px] font-black uppercase tracking-widest">AI Insights</span>
               </div>
-              <h4 className="text-xl font-black mb-3">Get Your Daily Auto Digest</h4>
+              <h4 className="text-xl font-black mb-3">Daily Auto Digest</h4>
               <p className="text-blue-100/70 text-sm leading-relaxed mb-6">
-                Too busy to read? Let our AI Mechanic summarize today's top 5 automotive trends in Malaysia.
+                Let our AI Mechanic summarize today's top automotive trends in Malaysia based on the current news.
               </p>
-              <button className="w-full py-4 bg-white text-blue-700 rounded-2xl font-bold hover:bg-blue-50 transition-all shadow-lg active:scale-95">
-                Generate AI Summary
+              
+              {summary ? (
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 mb-6 animate-in fade-in slide-in-from-top-2">
+                  <div className="prose prose-invert prose-sm">
+                    {summary.split('\n').map((line, i) => (
+                      <p key={i} className="text-xs text-blue-50 leading-relaxed mb-2">{line}</p>
+                    ))}
+                  </div>
+                  <button onClick={() => setSummary(null)} className="text-[10px] font-bold text-blue-300 uppercase mt-2 hover:text-white">Clear Summary</button>
+                </div>
+              ) : null}
+
+              <button 
+                onClick={handleGenerateSummary}
+                disabled={isGenerating}
+                className="w-full py-4 bg-white text-blue-700 rounded-2xl font-bold hover:bg-blue-50 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5" />
+                    Generate AI Summary
+                  </>
+                )}
               </button>
             </div>
             <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>

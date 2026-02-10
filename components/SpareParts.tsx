@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Filter, ShoppingCart, Info, CheckCircle2 } from 'lucide-react';
-import { Vehicle } from '../App';
+import { Vehicle } from '../types.ts';
 
 interface SparePartsProps {
   userVehicles?: Vehicle[];

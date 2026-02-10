@@ -1,4 +1,16 @@
 
+export type Tab = 'home' | 'garage' | 'parts' | 'lubricants' | 'car-bidding' | 'bidding' | 'community' | 'maintenance' | 'ai' | 'news';
+
+export interface Vehicle {
+  id: string;
+  brand: string;
+  model: string;
+  year: string;
+  mileage: number;
+  plate: string;
+  lastService: string;
+}
+
 export interface CarModel {
   brand: 'Perodua' | 'Proton' | 'Honda' | 'Toyota' | 'Other';
   name: string;

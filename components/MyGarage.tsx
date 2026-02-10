@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Plus, Car as CarIcon, Gauge, Calendar, ShieldCheck, ChevronRight, Activity, Wrench, Settings } from 'lucide-react';
-import { Vehicle } from '../App';
+import { Vehicle } from '../types.ts';
 
 interface MyGarageProps {
   vehicles: Vehicle[];

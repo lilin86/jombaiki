@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { getPartChecklist } from '../services/gemini.ts';
 import { CheckCircle2, AlertCircle, Clock, Loader2, BookOpen, RefreshCw, ChevronRight } from 'lucide-react';
-import { Vehicle } from '../App.tsx';
+import { Vehicle } from '../types.ts';
 
 interface MaintenanceGuideProps {
   activeVehicle?: Vehicle;
