@@ -1,29 +1,21 @@
 
 import React, { useState } from 'react';
 import { Filter, ShoppingCart, Info, CheckCircle2 } from 'lucide-react';
-import { Vehicle } from '../types.ts';
+import { Vehicle, SparePart } from '../types.ts';
 
 interface SparePartsProps {
   userVehicles?: Vehicle[];
+  parts: SparePart[];
 }
 
-const MOCK_PARTS = [
-  { id: '1', name: 'Perodua Myvi Front Brake Pad', brand: 'Akebono', price: 85, image: 'https://picsum.photos/400/300?random=1', category: 'Suspension', condition: 'New', compatibility: ['Perodua Myvi'] },
-  { id: '2', name: 'Proton Saga VVT Oil Filter', brand: 'Proton Genuine', price: 18, image: 'https://picsum.photos/400/300?random=2', category: 'Engine', condition: 'New', compatibility: ['Proton Saga'] },
-  { id: '3', name: 'Honda City GN2 LED Headlamp', brand: 'Used Original', price: 450, image: 'https://picsum.photos/400/300?random=3', category: 'Electronics', condition: 'Used', compatibility: ['Honda City'] },
-  { id: '4', name: 'Toyota Vios NCP150 Absorber', brand: 'KYB Excel-G', price: 140, image: 'https://picsum.photos/400/300?random=4', category: 'Suspension', condition: 'New', compatibility: ['Toyota Vios'] },
-  { id: '5', name: 'Perodua Bezza Spark Plug Set', brand: 'NGK Iridium', price: 120, image: 'https://picsum.photos/400/300?random=5', category: 'Engine', condition: 'New', compatibility: ['Perodua Bezza', 'Perodua Myvi'] },
-  { id: '6', name: 'Universal Car Android Player', brand: 'Teyes CC3', price: 1200, image: 'https://picsum.photos/400/300?random=6', category: 'Electronics', condition: 'New', compatibility: ['Universal'] },
-];
-
-const SpareParts: React.FC<SparePartsProps> = ({ userVehicles = [] }) => {
+const SpareParts: React.FC<SparePartsProps> = ({ userVehicles = [], parts }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const categories = ['All', 'Engine', 'Suspension', 'Interior', 'Exterior', 'Electronics'];
 
   const filteredParts = selectedCategory === 'All' 
-    ? MOCK_PARTS 
-    : MOCK_PARTS.filter(p => p.category === selectedCategory);
+    ? parts 
+    : parts.filter(p => p.category === selectedCategory);
 
   const checkFitment = (compatibility: string[]) => {
     return userVehicles.find(v => compatibility.some(c => v.model.includes(c) || c === 'Universal'));
@@ -39,7 +31,7 @@ const SpareParts: React.FC<SparePartsProps> = ({ userVehicles = [] }) => {
               onClick={() => setSelectedCategory(cat)}
               className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all border
                 ${selectedCategory === cat 
-                  ? 'bg-blue-600 text-white border-blue-600 shadow-xl shadow-blue-500/20' 
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-xl' 
                   : 'bg-white text-slate-500 hover:bg-slate-50 border-slate-200'}
               `}
             >
@@ -47,7 +39,7 @@ const SpareParts: React.FC<SparePartsProps> = ({ userVehicles = [] }) => {
             </button>
           ))}
         </div>
-        <button className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-blue-600 transition-all active:scale-95">
+        <button className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl text-xs font-black uppercase hover:bg-blue-600 transition-all">
           <Filter className="w-4 h-4" />
           Filter Options
         </button>
@@ -89,7 +81,7 @@ const SpareParts: React.FC<SparePartsProps> = ({ userVehicles = [] }) => {
                     <button className="p-3 bg-slate-50 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all">
                       <Info className="w-5 h-5" />
                     </button>
-                    <button className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-xl transition-all shadow-lg shadow-blue-500/10 active:scale-90">
+                    <button className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-xl shadow-lg active:scale-90 transition-all">
                       <ShoppingCart className="w-5 h-5" />
                     </button>
                   </div>

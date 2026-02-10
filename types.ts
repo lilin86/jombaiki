@@ -1,4 +1,5 @@
 
+
 export type Tab = 'home' | 'garage' | 'parts' | 'lubricants' | 'car-bidding' | 'bidding' | 'community' | 'maintenance' | 'ai' | 'news';
 
 export interface Vehicle {
@@ -20,6 +21,7 @@ export interface CarModel {
 export interface SparePart {
   id: string;
   name: string;
+  brand: string;
   category: 'Engine' | 'Suspension' | 'Interior' | 'Exterior' | 'Electronics';
   price: number;
   image: string;
